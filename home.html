@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .form-container {
+      margin-bottom: 20px;
+    }
+
+    .form-container input[type="text"] {
+      padding: 8px;
+      width: 200px;
+    }
+
+    .form-container input[type="submit"] {
+      padding: 8px 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    table th, table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <h1>User Management</h1>
+
+  <div class="form-container">
+    <input type="text" id="username" placeholder="Username">
+    <input type="text" id="email" placeholder="Email">
+    <input type="submit" value="Add User" onclick="addUser()">
+  </div>
+
+  <table id="user-table">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+  <script>
+    function addUser() {
+      var username = document.getElementById("username").value;
+      var email = document.getElementById("email").value;
+  
+      if (username !== '' && email !== '') {
+        var userData = {
+          username: username,
+          email: email
+        };
+  
+        fetch("http://localhost:8080/users/add", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(userData)
+        })
+        .then(function(response) {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error("Network response was not ok.");
+          }
+        })
+        // .then(function(data) {
+        //   if (data.success) {
+        //     var table = document.getElementById("user-table").getElementsByTagName('tbody')[0];
+        //     var newRow = table.insertRow(table.rows.length);
+        //     var cell1 = newRow.insertCell(0);
+        //     var cell2 = newRow.insertCell(1);
+        //     cell1.innerHTML = data.user.username;
+        //     cell2.innerHTML = data.user.email;
+        //     document.getElementById("username").value = '';
+        //     document.getElementById("email").value = '';
+        //   } else {
+        //     alert(data.message);
+        //   }
+        // })
+        .catch(function(error) {
+          console.error('Error:', error);
+        });
+      } else {
+        alert("Please enter both username and email.");
+      }
+    }
+  </script>
+  
+</body>
+</html>
