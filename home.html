@@ -72,7 +72,11 @@
           username: username,
           email: email
         };
-  
+
+        // fetch('http://localhost:8080/users/add',{ method: "POST"})
+        // .then(response => response.text())
+        // .then(data => console.log(data));
+
         fetch("http://localhost:8080/users/add", {
           method: "POST",
           headers: {
@@ -87,20 +91,20 @@
             throw new Error("Network response was not ok.");
           }
         })
-        // .then(function(data) {
-        //   if (data.success) {
-        //     var table = document.getElementById("user-table").getElementsByTagName('tbody')[0];
-        //     var newRow = table.insertRow(table.rows.length);
-        //     var cell1 = newRow.insertCell(0);
-        //     var cell2 = newRow.insertCell(1);
-        //     cell1.innerHTML = data.user.username;
-        //     cell2.innerHTML = data.user.email;
-        //     document.getElementById("username").value = '';
-        //     document.getElementById("email").value = '';
-        //   } else {
-        //     alert(data.message);
-        //   }
-        // })
+        .then(function(data) {
+          if (data.success) {
+            var table = document.getElementById("user-table").getElementsByTagName('tbody')[0];
+            var newRow = table.insertRow(table.rows.length);
+            var cell1 = newRow.insertCell(0);
+            var cell2 = newRow.insertCell(1);
+            cell1.innerHTML = data.user.username;
+            cell2.innerHTML = data.user.email;
+            document.getElementById("username").value = '';
+            document.getElementById("email").value = '';
+          } else {
+            alert(data.message);
+          }
+        })
         .catch(function(error) {
           console.error('Error:', error);
         });
